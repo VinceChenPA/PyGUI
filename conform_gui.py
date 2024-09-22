@@ -20,10 +20,38 @@ Exceptions:
 import tkinter as tk
 from tkinter import ttk
 import json
+import pandas as pd
 
 # Load data from gcp_projects.json
 with open('gcp_projects.json', 'r', encoding='utf-8') as file:
     projects = json.load(file)
+
+def catalogue_refresh():
+    """
+    Fetches and returns a pandas DataFrame with the catalogue data.
+
+    Returns:
+        pd.DataFrame: The DataFrame containing the catalogue data.
+    """
+    # Your logic to get the pandas DataFrame
+    df = pd.DataFrame({
+        'Column1': ['Value1', 'Value2'],
+        'Column2': ['Value3', 'Value4']
+    })
+    return df
+
+def refresh_catalogue_tree():
+    """
+    Refreshes the catalogue_tree TreeView with the latest data from the catalogue_refresh function.
+    """
+    df = catalogue_refresh()
+    # Clear the existing tree
+    for item in catalogue_tree.get_children():
+        catalogue_tree.delete(item)
+    # Insert new data
+    for row in df.iterrows():
+        catalogue_tree.insert('', 'end', values=list(row))
+
 
 # Create the main window
 root = tk.Tk()
@@ -70,7 +98,7 @@ catalogue_tree.heading('#3', text='Column 3')
 catalogue_tree.pack(side=tk.LEFT, padx=5)
 
 # Create a generate button
-refresh_button = tk.Button(frame2, text="Refresh")
+refresh_button = ttk.Button(frame2, text="Refresh", command=refresh_catalogue_tree)
 refresh_button.pack(side=tk.RIGHT, padx=5)
 
 # Create a frame for the table and generate button
